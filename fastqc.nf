@@ -1,6 +1,6 @@
 process fastqc_pe {
 
-  container "bschiffthaler/fastqc:${params.fastqc_version}"
+  container "bschiffthaler/fastqc:" + params.fastqc_version
   publishDir "report/00-qc/${stage}", pattern: "*.{html,zip}"
   publishDir "report/logs/", pattern: "*.log"
   executor params.executor

@@ -1,6 +1,6 @@
 process trimmomatic_pe {
 
-  container "bschiffthaler/trimmomatic:${params.trimmomatic_version}"
+  container "bschiffthaler/trimmomatic:" + params.trimmomatic_version
   publishDir "analysis/01-trimmomatic", pattern: "*.fastq.gz"
   publishDir "report/logs/", pattern: "*.log"
   cpus params.trimmomatic_cpus
@@ -11,7 +11,7 @@ process trimmomatic_pe {
     val meta
 
   output:
-    tuple val(name), path("${name}_trimmed_{1,2}.fastq.gz"), emit: data
+    tuple path("${name}_trimmed_1.fastq.gz"), path("${name}_trimmed_2.fastq.gz"), val(name), emit: data
     path "${name}_trimmomatic.log"
     val meta, emit: meta
 
