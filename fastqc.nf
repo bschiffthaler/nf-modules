@@ -1,7 +1,7 @@
 process fastqc_pe {
 
   container "bschiffthaler/fastqc:" + params.fastqc_version
-  publishDir "report/00-qc/${stage}", pattern: "*.{html,zip}"
+  publishDir "report/qc/${stage}", pattern: "*.{html,zip}"
   publishDir "report/logs/", pattern: "*.log"
   executor params.executor
   cpus 2
@@ -12,8 +12,8 @@ process fastqc_pe {
     val meta
 
   output:
-    path "*.{zip,html}"
-    path "*.log"
+    path "*.{zip,html}", emit: data
+    path "*.log", emit: log
     val meta, emit: meta
 
   """
@@ -21,8 +21,26 @@ process fastqc_pe {
   """
 }
 
+/*
+Function to process raw CSV input into expected 
+*/
 def map_input_pe(Ch) {
   Ch.map(row -> { 
     ["${baseDir}/" + row.RF, "${baseDir}/" + row.RS, row.Id] 
   })
+}
+
+def bibtex() {
+  """
+  @misc{andrews2010fastqc,
+    title={FastQC: a quality control tool for high throughput sequence data},
+    author={Andrews, Simon and others},
+    year={2010},
+    publisher={Babraham Bioinformatics, Babraham Institute, Cambridge, United Kingdom}
+  }
+  """
+}
+
+def citekey() {
+  "@andrews2010fastqc"
 }

@@ -1,7 +1,7 @@
 process trimmomatic_pe {
 
   container "bschiffthaler/trimmomatic:" + params.trimmomatic_version
-  publishDir "analysis/01-trimmomatic", pattern: "*.fastq.gz"
+  publishDir "analysis/trimmomatic", pattern: "*.fastq.gz"
   publishDir "report/logs/", pattern: "*.log"
   cpus params.trimmomatic_cpus
 
@@ -12,7 +12,7 @@ process trimmomatic_pe {
 
   output:
     tuple path("${name}_trimmed_1.fastq.gz"), path("${name}_trimmed_2.fastq.gz"), val(name), emit: data
-    path "${name}_trimmomatic.log"
+    path "${name}_trimmomatic.log", emit: log
     val meta, emit: meta
 
   script:
@@ -30,4 +30,23 @@ def map_input_pe(Ch) {
   Ch.map(row -> { 
     ["${baseDir}/" + row.RF, "${baseDir}/" + row.RS, row.Id] 
   })
+}
+
+def bibtex() {
+  """
+  @article{bolger2014trimmomatic,
+    title={Trimmomatic: a flexible trimmer for Illumina sequence data},
+    author={Bolger, Anthony M and Lohse, Marc and Usadel, Bjoern},
+    journal={Bioinformatics},
+    volume={30},
+    number={15},
+    pages={2114--2120},
+    year={2014},
+    publisher={Oxford University Press}
+  }
+  """
+}
+
+def citekey() {
+  "@bolger2014trimmomatic"
 }
