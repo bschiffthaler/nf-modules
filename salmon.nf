@@ -1,11 +1,12 @@
 process salmon_pe {
 
   container "bschiffthaler/salmon:" + params.salmon_version
-  publishDir "analysis/salmon", pattern: "salmon_*"
-  publishDir "report/logs/", pattern: "*salmon_logs"
+  publishDir "analysis/${prefix}", pattern: "salmon_*"
+  publishDir "report/logs/${prefix}", pattern: "*salmon_logs"
   cpus params.salmon_cpus
 
   input:
+    val prefix
     tuple path(read1), path(read2), val(name)
     path index
     val libtype

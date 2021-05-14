@@ -22,11 +22,11 @@ process sortmerna_pe {
     _dbs = dbs.join(" --ref ")
     _args = args.join(" ")
     """
-    sortmerna --ref ${_dbs} --reads ${read1} --reads ${read2} --idx ${index} \
+    sortmerna --ref ${_dbs} --reads ${read1} --reads ${read2} --idx-dir ${index} \
       --workdir ${name}_sortmerna --threads ${params.sortmerna_cpus} \
       --fastx --aligned ${name}_rrna --other ${name}_sortmerna --paired_in \
       --out2
-    gzip *.fastq
+    find . -mindepth 1 -maxdepth 1 -name "*.f*q" -exec gzip {} \\; || true
     cp ${name}_rrna.log ${name}_sortmerna.log
     """
 }
