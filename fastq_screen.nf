@@ -22,6 +22,7 @@ process fastq_screen_pe {
     fastq_screen --aligner bowtie2 \
       --conf ${index}/fastq_screen.conf \
       --threads ${params.fastq_screen_cpus} ${read1} ${read2} \
+      ${_args} \
       2>&1 > ${name}_screen.log
     """
 }
